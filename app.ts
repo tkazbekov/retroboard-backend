@@ -27,7 +27,7 @@ connectToDatabase().then(() => {
             socket.emit('board_created', newBoard._id)
         })
 
-        socket.on('get_board', async (id: string) => {
+        socket.on('get_board', async (id: ObjectId) => {
 
             console.log("get board", id);
 
@@ -71,6 +71,20 @@ connectToDatabase().then(() => {
                 )
                 await collections.notes.insertOne(newNote);
                 io.emit('note_update', newNote, columnId);
+            })
+
+            socket.on('vote', async (noteId) => {
+                console.log('try voting', noteId)
+                const updatedNote: Note | unknown = await collections.notes.findOneAndUpdate(
+                    { id: new ObjectId(noteId) },
+                    {
+                        $inc: { votes: 1 },
+                    },
+                    {
+                        returnDocument: "after"
+                    }
+                ).then(res => res.value)
+                io.emit("vote_update", updatedNote as Note);
             })
         })
 

@@ -8,13 +8,15 @@ export interface ServerToClientEvents {
   board_found: (board: Board) => void;
   note_update: (note: Note, columnId: string) => void;
   board_created: (id: ObjectId) => void;
+  vote_update: (note: Note) => void;
 }
 
 export interface ClientToServerEvents {
   hello: () => void;
-  get_board: (id) => void;
+  get_board: (id: ObjectId) => void;
   new_note: (note: string, columnId: string) => void;
   create_board: () => void;
+  vote: (noteId: ObjectId) => void;
 }
 
 export interface InterServerEvents {
