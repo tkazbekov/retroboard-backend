@@ -22,6 +22,11 @@ connectToDatabase().then(() => {
     io.on('connection', (socket) => {
         console.log('A new user has connected!', socket.id)
 
+        socket.on('create_board', async () => {
+            const newBoard = await createNewBoard();
+            socket.emit('board_created', newBoard._id)
+        })
+
         socket.on('get_board', async (id: string) => {
 
             console.log("get board", id);
@@ -76,7 +81,7 @@ connectToDatabase().then(() => {
     });
 })
 
-const createNewBoard = async (id: ObjectId) => {
+const createNewBoard = async (id?: ObjectId) => {
     const board = new Board();
     if (id) { board._id = id; }
     await collections.boards.insertOne(board)
