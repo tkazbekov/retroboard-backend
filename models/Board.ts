@@ -12,8 +12,8 @@ export class Note {
 
 export class Column {
     constructor(
-        public id: ObjectId = new ObjectId(),
         public title: string = "New Column",
+        public id: ObjectId = new ObjectId(),
         public notes: Note[] = []
     ) { }
 }
@@ -23,7 +23,7 @@ export class Column {
 export default class Board {
     constructor(
         public title: string = "New Board",
-        public columns: Column[] = [new Column(), new Column(), new Column()],
+        public columns: Column[] = [new Column("What went well"), new Column("What could be improved"), new Column("Action points")],
         public _id?: ObjectId
     ) { }
 }
